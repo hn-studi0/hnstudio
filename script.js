@@ -1462,17 +1462,56 @@ H&N Studio`;
 
 
             /* =================================================
-               WHATSAPP NUMBER
+               WHATSAPP CONTACT OPTIONS
             ================================================= */
 
-            const whatsappNumber =
-                "919620313839";
+            const whatsappContacts = [
+
+                {
+                    label: "WhatsApp — 01",
+                    display: "+91 96203 13839",
+                    number: "919620313839"
+                },
+
+                {
+                    label: "WhatsApp — 02",
+                    display: "+91 95351 95219",
+                    number: "919535195219"
+                }
+
+            ];
 
 
-            const whatsappURL =
-                `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(
-                    message
-                )}`;
+            /* =================================================
+               BUILD WHATSAPP LINKS
+            ================================================= */
+
+            const whatsappLinks =
+                whatsappContacts
+                    .map((contact) => {
+
+                        const whatsappURL =
+                            `https://wa.me/${contact.number}?text=${encodeURIComponent(
+                                message
+                            )}`;
+
+                        return `
+                            <a
+                                class="booking-whatsapp-option"
+                                href="${whatsappURL}"
+                                target="_blank"
+                                rel="noopener"
+                            >
+                                <span>
+                                    <strong>${contact.label}</strong>
+                                    <small>${contact.display}</small>
+                                </span>
+                                <b>OPEN ↗</b>
+                            </a>
+                        `;
+
+                    })
+                    .join("");
 
 
             /* =================================================
@@ -1482,33 +1521,26 @@ H&N Studio`;
             if (bookingResult) {
 
                 bookingResult.innerHTML = `
-                    Booking request prepared.
+                    <div class="booking-result-title">
+                        Booking request prepared.
+                    </div>
 
-                    <a
-                        style="
-                            color:var(--gold);
-                            text-decoration:underline;
-                            margin-left:6px;
-                        "
-                        target="_blank"
-                        rel="noopener"
-                        href="${whatsappURL}"
-                    >
-                        Continue on WhatsApp ↗
-                    </a>
+                    <p class="booking-result-text">
+                        Choose either H&N WhatsApp number below to send your
+                        complete booking request.
+                    </p>
+
+                    <div class="booking-whatsapp-options">
+                        ${whatsappLinks}
+                    </div>
                 `;
 
+                bookingResult.scrollIntoView({
+                    behavior: "smooth",
+                    block: "nearest"
+                });
+
             }
-
-
-            /* =================================================
-               OPEN WHATSAPP
-            ================================================= */
-
-            window.open(
-                whatsappURL,
-                "_blank"
-            );
 
         }
     );
